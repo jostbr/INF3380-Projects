@@ -1,0 +1,18 @@
+
+COMPILE/RUN COMMANDS:
+
+Serial:
+gcc serial_matrix_prod.c -o serial_matrix_prod
+./serial_matrix_prod large_matrix_a.bin large_matrix_b.bin
+
+Parallel MPI:
+mpicc parallel_matrix_prod_MPI.c -o parallel_matrix_prod_MPI
+mpirun -n 4 ./parallel_matrix_prod_MPI -np 4 large_matrix_a.bin large_matrix_b.bin
+
+Parallel OMP:
+gcc -fopenmp parallel_matrix_prod_OMP.c -o parallel_matrix_prod_OMP
+./parallel_matrix_prod_OMP large_matrix_a.bin large_matrix_b.bin
+
+Parallel MPI and OMP:
+mpicc -fopenmp parallel_matrix_prod_MPI_OMP.c -o parallel_matrix_prod_MPI_OMP
+mpirun -n 4 ./parallel_matrix_prod_MPI_OMP -np 4 large_matrix_a.bin large_matrix_b.bin

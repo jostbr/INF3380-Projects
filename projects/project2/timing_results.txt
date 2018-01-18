@@ -1,0 +1,26 @@
+
+------------------------------------------------------------------------------------------
+File best viewed without word-wrap enabled due to manuel line changes.
+------------------------------------------------------------------------------------------
+
+Below is overview of the time consumption by each of the four versions of the program
+when using the large matrices as input files. All the results below are obtained when
+running the OS on 4 processors. Furthermore in the MPI-versions 4 MPI-processes is used,
+and in the OMP-versions 4 threads are used. Finallly; all times are given in seconds (and,
+speedup = serial_time / parallel_time).
+
+serial_matrix_prod.c  -------------------------  4.362s    ---->    speedup = 1.00
+parallel_matrix_prod_MPI.c  -------------------  1.498s    ---->    speedup = 2.91
+parallel_matrix_prod_OMP.c  -------------------  1.256s    ---->    speedup = 3.47
+parallel_matrix_prod_MPI_OMP.c  ---------------  1.620s    ---->    speedup = 2.69
+
+Wee se that the pure OMP version performs the best on this computer. This seems reasonable
+given the 4 underlaying processors and the 4 threads used. Second best we find the pure MPI
+version. This also seems plausible since we here use 4 MPI-prosesses (one on each physical),
+but it uses more time than the pure OMP-version due to the distributed memory (the need to
+send information between processes). Finally, with the lowest speedup, we have the combined
+MPI and OMP version. Here we use 4 threads on each of the 4 MPI-processes, but due to the
+underlaying hardware only has 4 processors, this doesn't give better performance on this
+machine. But this last combined version would probably be the fastest one when used on a
+huge cluster and setting the number of MPI-processes equal the number of nodes, and the
+number of threads equal the number of cores per node.

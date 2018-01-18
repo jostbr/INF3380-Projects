@@ -1,0 +1,102 @@
+
+----------------------------------------------------------------------------
+File best viewed without word-wrap because of manual line changes.
+----------------------------------------------------------------------------
+
+
+As mentioned in README2.txt it was found that parallel_main.c executet
+fastest when using two 2 processes to run the program. This is used when
+getting the results showed below. To get the runtimes of the programs the
+command <$ time> command (in front of "run-program-commands"), in Linux,
+was used. In all runnings we have num_procs = 2 and kappa = 0.1.
+
+----------------------------------------------------------------------------
+Timing test for entire program: serial_main.c versus parallel_main.c:
+Let T_s be used time by the serial program an similarly T_p for parallel:
+All time values are given in seconds and speedup = T_s / T_p.
+
+  iters = 0001:    T_s = 0.767,    T_p = 0.717      ---->    speedup = 1.07
+  iters = 0010:    T_s = 0.842,    T_p = 0.804      ---->    speedup = 1.05
+  iters = 0050:    T_s = 2.190,    T_p = 1.861      ---->    speedup = 1.18
+  iters = 0200:    T_s = 7.379,    T_p = 5.962      ---->    speedup = 1.24
+  iters = 0500:    T_s = 17.519,   T_p = 14.168     ---->    speedup = 1.24
+  iters = 1000:    T_s = 34.470,   T_p = 28.264     ---->    speedup = 1.22
+  iters = 2000:    T_s = 68.728,   T_p = 55.648     ---->    speedup = 1.24
+  iters = 5000:    T_s = 171.506,  T_p = 139.148    ---->    speedup = 1.23
+
+We see that the parallelization does not help much for small values iters.
+The only section of the code where running on multiple processors benefits
+over running on one is inside the iters-loop in IDDP-funtion. When we only
+do one iteration here, we don't see much difference. However as we increase
+iters we get a larger speedup. But at a certain point, the speedup seem to
+stabilize at apporximately 1.24. Beyond this point, the speedup seems
+constant no matter what iters is.
+----------------------------------------------------------------------------
+
+----------------------------------------------------------------------------
+Timing test of parallel program for different amount of processes. Here we
+run parallel_main.c with iters = 45 and kappa = 0.1 for num_procs equal to
+1 and up to 50. All times are in seconds:
+
+  num_procs = 01:    T_p = 2.427
+  num_procs = 02:    T_p = 1.795
+  num_procs = 03:    T_p = 2.152
+  num_procs = 04:    T_p = 2.043
+  num_procs = 05:    T_p = 2.296
+  num_procs = 06:    T_p = 2.387
+  num_procs = 07:    T_p = 2.559
+  num_procs = 08:    T_p = 2.768
+  num_procs = 09:    T_p = 2.782
+  num_procs = 10:    T_p = 2.999
+  num_procs = 11:    T_p = 3.272
+  num_procs = 12:    T_p = 3.312
+  num_procs = 13:    T_p = 3.303
+  num_procs = 14:    T_p = 3.331
+  num_procs = 15:    T_p = 3.715
+  num_procs = 16:    T_p = 3.887
+  num_procs = 17:    T_p = 4.054
+  num_procs = 18:    T_p = 4.353
+  num_procs = 19:    T_p = 4.319
+  num_procs = 20:    T_p = 4.468
+  num_procs = 21:    T_p = 4.480
+  num_procs = 22:    T_p = 4.709
+  num_procs = 23:    T_p = 4.920
+  num_procs = 24:    T_p = 4.915
+  num_procs = 25:    T_p = 5.230
+  num_procs = 26:    T_p = 5.336
+  num_procs = 27:    T_p = 5.801
+  num_procs = 28:    T_p = 5.973
+  num_procs = 29:    T_p = 6.275
+  num_procs = 30:    T_p = 6.295
+  num_procs = 31:    T_p = 6.545
+  num_procs = 32:    T_p = 6.882
+  num_procs = 33:    T_p = 6.999
+  num_procs = 34:    T_p = 7.267
+  num_procs = 35:    T_p = 7.667
+  num_procs = 36:    T_p = 7.595
+  num_procs = 37:    T_p = 8.764
+  num_procs = 38:    T_p = 9.295
+  num_procs = 39:    T_p = 9.698
+  num_procs = 40:    T_p = 9.711
+  num_procs = 41:    T_p = 9.911
+  num_procs = 42:    T_p = 10.869
+  num_procs = 43:    T_p = 10.668
+  num_procs = 44:    T_p = 11.861
+  num_procs = 45:    T_p = 12.216
+  num_procs = 46:    T_p = 12.408
+  num_procs = 47:    T_p = 12.669
+  num_procs = 48:    T_p = 12.313
+  num_procs = 49:    T_p = 12.689
+  num_procs = 50:    T_p = 14.183
+
+We see that on my setup (2 CPUcores allocated to the virtual machine in
+which the program was run) the fastest execution time is for num_procs
+= 2. The CPU might be busy with other tasks simultanously, so these
+values should be taken with a grain of salt, but in general we recognize
+increasing execution time with increasing number of processes. We then get
+an increasing number of communication operations IDDP. In the JPEG file
+parallel_main_time.jpg a plot of the values above can be seen. What's just
+disussed can be seen here.
+----------------------------------------------------------------------------
+
+
